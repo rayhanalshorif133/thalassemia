@@ -348,6 +348,12 @@
                         <span>Reports</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('manage-ticket') }}" class="{{ request()->is('manage-ticket') ? 'active' : '' }}">
+                        <i>📝</i>
+                        <span>Manage Tickets</span>
+                    </a>
+                </li>
             </ul>
         </aside>
 

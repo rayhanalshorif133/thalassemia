@@ -12,10 +12,16 @@ class Payment extends Model
         'msisdn',
         'amount',
         'pay_status',
+        'status',
+        'gp_status',
+        'send_sms',
         'date',
         'response_data',
     ];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 
     public function ticketSeries()
     {
@@ -26,6 +32,9 @@ class Payment extends Model
     {
 
         $userHasToken = UserHasToken::select()->where('msisdn', $msisdn)->first();
+        if($userHasToken == null){
+            return  "Token not Found";
+        }
         return  $userHasToken->token;
     }
 }

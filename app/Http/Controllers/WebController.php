@@ -13,8 +13,11 @@ class WebController extends Controller
     
     public function index()
     {
-        return view('landing-page');
+       
+        return view('finished');
     }
+    
+    
 
     public function purchaseSuccess(Request $request)
     {
@@ -32,10 +35,14 @@ class WebController extends Controller
         return view('download-ticket');
     }
 
-    public function checkTicket($msisdn)
+    public function checkTicket($msisdn, $token)
     {
-        $tokenNo = UserHasToken::where('msisdn', $msisdn)
-            ->first();
-        return redirect()->route('ticket.download', ['msisdn' => $msisdn, 'user_id' => $tokenNo->token]); 
+        
+        if($msisdn && $token){
+            return redirect()->route('ticket.download', ['msisdn' => $msisdn, 'user_id' => $token]); 
+        }else{
+            return redirect()->route('ticket.download');
+        }
+       
     }
 }

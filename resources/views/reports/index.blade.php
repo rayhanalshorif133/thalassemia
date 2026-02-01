@@ -144,6 +144,10 @@
         nav span[aria-disabled="true"] span {
             padding: 6px 8px !important;
         }
+
+        #deleteNow {
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -152,7 +156,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Reports</li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('reports.download') }}">Reports</a></li>
         </ol>
     </nav>
 
@@ -197,9 +201,9 @@
     <div class="search-box">
         <form action="{{ route('reports.index') }}" method="GET">
             <div class="row align-items-end g-2">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label small text-muted">Search</label>
-                    <input type="text" name="ticket_no_msisdn" class="form-control"
+                    <input type="text" id="msisdnInput" name="ticket_no_msisdn" class="form-control"
                         placeholder="🔍 Ticket or Msisdn No..." value="{{ request('ticket_no_msisdn') }}">
                 </div>
 
@@ -217,14 +221,20 @@
 
                 <div class="col-md-2">
                     <label class="form-label d-none d-md-block">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary w-100" style="border-radius: 8px;">
+                    <button type="submit" class="btn btn-primary w-75" style="border-radius: 8px;">
                         Filter Results
                     </button>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label d-none d-md-block">&nbsp;</label>
-                    <a href="{{ route('reports.index') }}" class="btn btn-danger w-100" style="border-radius: 8px;">
+                    <a href="{{ route('reports.index') }}" class="btn btn-danger w-75" style="border-radius: 8px;">
                         Reset
+                    </a>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label d-none d-md-block">&nbsp;</label>
+                    <a href="#" class="btn btn-info d-none w-75 showMTicketBtn" style="border-radius: 8px;">
+                        M. Tickets <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -235,12 +245,18 @@
     <div class="content-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5>Payment Records ({{ $payments->total() }})</h5>
-            <button class="btn btn-success btn-sm exportExcelBtn">
-                <i class="fas fa-file-excel"></i> Export Excel
-            </button>
+            <div>
+                <button class="btn btn-success btn-sm exportExcelBtn">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </button>
+            </div>
         </div>
 
         <div class="table-responsive">
+            <input type="hidden" id="acr" value="" />
+            @if ($user_id)
+                <input type="hidden" id="user_id" value="{{ $user_id->token }}" />
+            @endif
             <table class="table">
                 <thead>
                     <tr>
@@ -256,17 +272,23 @@
                     @forelse($payments as $item)
                         <tr>
                             <td>{{ $payments->firstItem() + $loop->index }}</td>
-                            <td><strong>{{ $item->ticket_no }}</strong></td>
+                            <td><strong>{{ $item->ticket_no }}</strong>
+                                <span id="{{ str_replace(' ', '_', $item->ticket_no) }}"
+                                    class="badge bg-danger mx-1 send_sms d-none">Processing Failed</span>
+                            </td>
                             <td>{{ $item->msisdn }}</td>
-                            <td>{{ number_format($item->amount, 2) }}</td>
+                            <td data-id="{{ $item->id }}" class="deleteNow">{{ number_format($item->amount, 2) }}</td>
                             <td>
-                                {{ $item->created_at ? $item->created_at->format('d M, Y') : '-' }}
+                                {{ $item->date ? $item->date->format('d M, Y') : '-' }}
                             </td>
                             <td>
                                 <a target="_blank" class="btn btn-primary btn-sm"
                                     href="{{ route('ticket.download', ['msisdn' => $item->msisdn, 'user_id' => $item->userID($item->msisdn)]) }}">
                                     Download
                                 </a>
+                                <button data-ticket_no="{{ $item->ticket_no }}" class="btn btn-info btn-sm d-none sendSMS">
+                                    Send SMS
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -292,11 +314,116 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script>
+        function convertBanglaToEnglish(input) {
+            const banglaNumbers = {
+                '০': '0',
+                '১': '1',
+                '২': '2',
+                '৩': '3',
+                '৪': '4',
+                '৫': '5',
+                '৬': '6',
+                '৭': '7',
+                '৮': '8',
+                '৯': '9'
+            };
+
+            return input.replace(/[০-৯]/g, function(digit) {
+                return banglaNumbers[digit];
+            });
+        }
+
+        $("#msisdnInput").on('input', function() {
+            const inputVal = $(this).val();
+            const convertedVal = convertBanglaToEnglish(inputVal);
+            $(this).val(convertedVal);
+        });
+
+        $("#msisdnInput").on('keyup', function(e) {
+            let msisdn = $(this).val().replace(/\s+/g, '');
+            $(this).val(msisdn);
+        });
+
         $(() => {
             $("#start_date").on('change', function() {
                 const startDate = $(this).val();
                 $("#to_date").val(startDate);
             });
+
+            $(".deleteNow").on('click', function() {
+                const id = $(this).data('id');
+
+                axios.get(`/api/delete-payment-record/${id}`).then((res) => {
+                    location.reload();
+                });
+                // if (confirm(`Are you sure you want to delete records?`)) {
+                // }
+            });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasMsisdn = urlParams.get('ticket_no_msisdn');
+
+            const fetchSMSLogs = () => {
+                axios.get(`https://gpglobal.b2mwap.com/api/check-tmt-log?msisdn=${hasMsisdn}&status=sms`)
+                    .then(async (res) => {
+                        var tickets = [];
+                        await res.data.sms_logs.length > 0 && res.data.sms_logs.map((item) => {
+                            const msg = item.message;
+                            let ticketMatch = msg.match(/টিকেট নাম্বার:\s*([^,]+)/);
+
+                            if (ticketMatch && ticketMatch[1]) {
+                                let ticketNumber = ticketMatch[1].trim();
+                                if (ticketNumber != 'Processing Failed') {
+                                    ticketNumber = ticketNumber.replace(/\s+/g, '_');
+                                    tickets.push(ticketNumber);
+                                }
+                            }
+                        });
+
+
+                        tickets.length > 0 && tickets.map((item) => {
+                            $(`#${item}`).text("Send").removeClass('bg-danger').addClass(
+                                'bg-success');
+                            $(`#${item}`).closest('tr').find('.sendSMS')
+                        });
+
+                        if (res.data.acr) {
+                            $('#acr').val(res.data.acr.customer_reference);
+                            $('.sendSMS').removeClass('d-none');
+                        }
+                    });
+            };
+
+            if (hasMsisdn) {
+                $(".send_sms").removeClass('d-none');
+                $(".showMTicketBtn").removeClass('d-none');
+                $(".showMTicketBtn").attr("href", `/manage-ticket?msisdn=${hasMsisdn}`);
+                fetchSMSLogs();
+            }
+
+
+            $(".sendSMS").on('click', function() {
+                $(this).removeClass('btn-info').addClass('btn-warning');
+                $(this).text('Sending ...');
+                const ticket_no = $(this).data('ticket_no');
+                const acr = $('#acr').val();
+                const user_id = $('#user_id').val();
+                axios.get(
+                        `/api/send-sms?acr=${acr}&msisdn=${hasMsisdn}&ticket_no=${ticket_no}&user_id=${user_id}`
+                    )
+                    .then((res) => {
+                        console.log(res.data);
+                        $(this).text('Success');
+                        $(this).removeClass('btn-warning').addClass('btn-success');
+                        fetchSMSLogs();
+
+                        setTimeout(() => {
+                            $(this).removeClass('btn-success').addClass('btn-info');
+                            $(this).text('Send SMS');
+                        }, 1000);
+                    });
+            });
+
 
 
             $(".exportExcelBtn").on("click", function() {
@@ -314,6 +441,75 @@
                     })
                     .then(response => {
                         const data = response.data;
+                        const exportData = [];
+                        data.length > 0 && data.map((item, index) => {
+
+                            exportData.push({
+                                "#": index + 1,
+                                "Ticket No": item.ticket_no,
+                                "Msisdn": item.msisdn,
+                                "Amount": item.amount,
+                                "Date": moment(item.date).format('LL')
+                            });
+                        });
+
+                        var ws = XLSX.utils.json_to_sheet(exportData);
+                        var wscols = [{
+                                wch: 5
+                            },
+                            {
+                                wch: 15
+                            },
+                            {
+                                wch: 15
+                            },
+                            {
+                                wch: 10
+                            },
+                            {
+                                wch: 15
+                            }
+                        ];
+                        ws['!cols'] = wscols;
+
+                        var wb = XLSX.utils.book_new();
+                        XLSX.utils.book_append_sheet(wb, ws, "Ticket_Report");
+
+                        XLSX.writeFile(wb, "Ticket_Sales_Data.xlsx");
+
+                        $('.exportExcelBtn').html(`<i class="fas fa-file-excel"></i> Export Excel`);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+
+
+
+
+
+            });
+
+            $(".exportRemainTicketsBtn").on("click", function() {
+
+                $(this).text('Loading...');
+
+
+                axios.get('/reports', {
+                        params: {
+                            type: 'remain',
+                            fetch: true
+                        }
+                    })
+                    .then(response => {
+                        const data = response.data;
+
+
+                        console.log(data);
+
+                        $(this).text('Export Remain Tickets');
+
+                        return false;
                         const exportData = [];
                         data.length > 0 && data.map((item, index) => {
 

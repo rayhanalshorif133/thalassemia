@@ -31,7 +31,15 @@ $msisdn = substr($msisdn, 0, 13);
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7296KN4JK7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
+      gtag('config', 'G-7296KN4JK7');
+    </script>
 
 </head>
 
@@ -62,7 +70,7 @@ $msisdn = substr($msisdn, 0, 13);
                 <p class="mission-text">বাংলাদেশ থ্যালাসেমিয়া সমিতি হাসপাতাল নির্মাণের লক্ষ্যে</p>
                 <h1 class="lottery-title">বিটিএস লটারি-২০২৫</h1>
                 <p class="gov-approval">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার অনুমোদিত</p>
-                <p class="prize-info">৫০ লক্ষ টাকার ১৩৫ টি পুরস্কার</p>
+                <p class="prize-info">৫০ লক্ষ টাকার ৯৩৫ টি পুরস্কার</p>
                 <p class="price-info">মূল্য: ২০ টাকা</p>
             </div>
 
@@ -92,16 +100,25 @@ $msisdn = substr($msisdn, 0, 13);
                     </label>
                 </div>
                 <div style="display: flex;">
-                    <label class="terms-box" style="margin-left:5px!important;flex-direction: column;">
-                        <div class="terms-content terms-btn-style" style="margin-left: -12px;">
+                    <label class="terms-box" style="margin-left:-13px!important;flex-direction: column;">
+                        <div class="terms-content terms-btn-style" style="margin-left: -94px;">
                             <i style="color: #000000;font-size: 14px;" class="fa-solid fa-headset"></i>
                             <span style="color: #000000;font-size: 14px;">Support:</span>
                             <span style="color: #05009f;font-size: 14px;">
-                                <a href="tel:+8801725298711"
-                                    style="color: inherit; text-decoration: none;">8801725298711</a>
+                                <a href="tel:+8801701677479"
+                                    style="color: inherit; text-decoration: none;">8801701677479 </a>
+                                    বা 
+                                    <a href="tel:+8801732701937"
+                                    style="color: inherit; text-decoration: none;">8801732701937 </a>
                             </span>
                         </div>
-                        <div class="terms-content terms-btn-style">
+                         <div class="terms-content terms-btn-style" style="margin-left: 5px;">
+                            <i style="color: #05009f;font-size: 14px;" class="fa-solid fa-clock"></i>
+                            <span style="color: #000000; font-size: 15px;">
+                                রবিবার থেকে বৃহস্পতিবার (সকাল ৯:৩০ টা থেকে বিকাল ৫:৩০ টা)
+                            </span>
+                        </div>
+                        <div class="terms-content terms-btn-style" style="margin-left: -11.8rem;">
                             <i style="color: #05009f;font-size: 14px;" class="fa-solid fa-envelope"></i>
                             <span style="color: #000000; font-size: 15px;">
                                 <a href="mailto:cservice@b2m-tech.com" style="color: inherit; text-decoration: none;">
@@ -109,12 +126,14 @@ $msisdn = substr($msisdn, 0, 13);
                                 </a>
                             </span>
                         </div>
+                       
                     </label>
                 </div>
 
                 <button type="submit" class="purchase-btn">
                     <i class="fa-solid fa-ticket"></i> ক্রয় করুন
                 </button>
+                <p style="color: #c31e26;text-align: center;font-weight: 700;">⏰ টিকেট ক্রয়ের শেষ দিন: ২৯ জানুয়ারি ২০২৬</p>
             </form>
 
 
@@ -180,7 +199,7 @@ $msisdn = substr($msisdn, 0, 13);
                         জন্য বাংলাদেশ থ্যালাসামিয়া সমিতি ওসংশ্লিষ্ট কর্তৃপক্ষ দায়ী থাকবে না।</li>
                     <li>ক্রয়কৃতলটারীর টিকেট নম্বর ওকনফার্মেশন কেবলমাত্র "GP DOB" আইডি থেকে এসএমএস এর মাধ্যমে পাঠানো
                         হবে।</li>
-                    <li>SMS না পেলে আপনার মোবাইলের SMS এপ এর SPAM সেকশনে যাচাই করুন। অন্যথায় হেল্পলাইনে (8801725298711)
+                    <li>SMS না পেলে আপনার মোবাইলের SMS এপ এর SPAM সেকশনে যাচাই করুন। অন্যথায় হেল্পলাইনে (8801701677479 বা 8801732701937)
                         অথবা cservice@b2m-tech.com এ যোগাযোগ করার জন্য অনুরোধ জানানো হচ্ছে।</li>
                     <li>নির্ধারিত তারিখে বাংলাদেশ থ্যালাসেমিয়া সমিতি কর্তৃপক্ষ ও বিশিষ্ট ব্যাক্তিদের উপস্থিতিতে ঢাকায়
                         ড্র অনুষ্ঠিত হবে।</li>
@@ -188,7 +207,7 @@ $msisdn = substr($msisdn, 0, 13);
                         হবে। সেই সাথে বর্তমান ওয়েবসাইটেও (thalassemia.b2mwap.com) বিজয়ীদেরতালিকা প্রকাশ হবে।</li>
                     <li>ফলাফল প্রকাশের৩০ দিনের মধ্যে বিজয়ীদের পুরষ্কারের জন্য নাম ঠিকানা, সত্যায়িত ছবি ওটিকেট
                         প্রাপ্তির এসএমএস সহ লিখিত দাবী কর্তৃপক্ষের নিকট দাখিল করতে হবে। অনলাইন টিকেটের ক্ষেত্রে
-                        টিকেটহোল্ডারকে হেল্পলাইনে (8801725298711) অথবা cservice@b2m-tech.com এ যোগাযোগ করার জন্য অনুরোধ
+                        টিকেটহোল্ডারকে হেল্পলাইনে (8801701677479 বা 8801732701937) অথবা cservice@b2m-tech.com এ যোগাযোগ করার জন্য অনুরোধ
                         জানানো হচ্ছে।</li>
                     <li>৬ষ্ঠ হতে ৮ম পুরস্কারেরক্ষেত্রে বিজয়ী নম্বর ক,খ,গ, ঘ,ঙ, চ, ছ, জ, ঝ, ঞপ্রত্যেক সিরিজের ক্ষেত্রে
                         প্রযোজ্য হবে।</li>

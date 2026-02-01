@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
@@ -31,34 +32,30 @@ class HomeController extends Controller
         // pass
         // $pass = Hash::make('2l6eM?"l~4[W');
 
-        // dd($pass);
-
-        $todayCount = Payment::whereDate('date', Carbon::today())->count();;
-        $yesterdayCount = Payment::whereDate('date', Carbon::yesterday())->count();
-        $totalSold = Payment::count();
+        $todayCount = Payment::where('status', 1)->whereDate('date', Carbon::today())->count();;
+        $yesterdayCount = Payment::where('status', 1)->whereDate('date', Carbon::yesterday())->count();
+        $totalSold = Payment::where('status', 1)->count();
 
 
         // chart
-    $startDate = Carbon::parse('2025-12-01 00:00:00.0');
-    $endDate = Carbon::today()->endOfDay();
+        $startDate = Carbon::parse('2025-12-01 00:00:00.0');
+        $endDate = Carbon::today()->endOfDay();
 
-    $salesData = Payment::whereBetween('date', [$startDate, $endDate])
-                ->selectRaw('DATE(date) as date, count(*) as count')
-                ->groupByRaw('DATE(date)') // গ্রুপিং
-                ->orderBy('date', 'ASC')   // ছোট থেকে বড় তারিখ অনুযায়ী সাজানো
-                ->get();
+        $salesData = Payment::whereBetween('date', [$startDate, $endDate])
+            ->selectRaw('DATE(date) as date, count(*) as count')
+            ->groupByRaw('DATE(date)')
+            ->orderBy('date', 'ASC')
+            ->where('status', 1)
+            ->get();
 
-    // ২. লেবেল এবং ডাটা অ্যারে প্রস্তুত করা
-    $labels = [];
-    $data = [];
+        $labels = [];
+        $data = [];
 
-    foreach ($salesData as $row) {
-        // তারিখ ফরম্যাট (যেমন: 24 Dec)
-        $labels[] = Carbon::parse($row->date)->format('d M'); 
-        
-        // ওই তারিখের কাউন্ট
-        $data[] = $row->count;
-    }
+        foreach ($salesData as $row) {
+            $labels[] = Carbon::parse($row->date)->format('d M');
+
+            $data[] = $row->count;
+        }
 
         return view('home', compact('todayCount', 'yesterdayCount', 'totalSold', 'labels', 'data'));
     }

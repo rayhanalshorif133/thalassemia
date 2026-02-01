@@ -106,7 +106,7 @@ $msisdn = substr($msisdn, 0, 13);
                 <p class="mission-text">বাংলাদেশ থ্যালাসেমিয়া সমিতি হাসপাতাল নির্মাণের লক্ষ্যে</p>
                 <h1 class="lottery-title">বিটিএস লটারি-২০২৫</h1>
                 <p class="gov-approval">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার অনুমোদিত</p>
-                <p class="prize-info">৫০ লক্ষ টাকার ১৩৫ টি পুরস্কার</p>
+                <p class="prize-info">৫০ লক্ষ টাকার ৯৩৫ টি পুরস্কার</p>
                 <p class="price-info">মূল্য: ২০ টাকা</p>
             </div>
 
@@ -358,9 +358,7 @@ $msisdn = substr($msisdn, 0, 13);
                         }
                     })
                     .catch(function(error) {
-                        alert(
-                            'Error fetching ticket data. Please check your mobile number and token number.'
-                        );
+                        console.log(error);
                     });
             });
 
