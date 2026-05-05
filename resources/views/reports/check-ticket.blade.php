@@ -101,7 +101,7 @@
         async function processNumbers() {
             let rows = $(".dataTableBody tr").toArray(); // Sob row ke array-te niye nilam
             let totalRequests = rows.length;
-            let batchSize = 20; // Ekshathe koita request pathate chan (e.g., 10-20 ti safe)
+            let batchSize = 200; // Ekshathe koita request pathate chan (e.g., 10-20 ti safe)
 
             $("#reqCounterMsisdn").text(`Request Processing: ${totalRequests}`);
             const urlParams = new URLSearchParams(window.location.search);
