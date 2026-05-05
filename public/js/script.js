@@ -51,6 +51,29 @@ $(document).ready(function () {
         }
     });
 
+    // Quantity controls for tickets
+    $('#plus-btn').on('mousedown', function() {
+        $(this).addClass('pressed');
+    }).on('mouseup mouseleave', function() {
+        $(this).removeClass('pressed');
+    }).on('click', function() {
+        var input = $('#tickets');
+        var currentVal = parseInt(input.val());
+        input.val(currentVal + 1);
+    });
+
+    $('#minus-btn').on('mousedown', function() {
+        $(this).addClass('pressed');
+    }).on('mouseup mouseleave', function() {
+        $(this).removeClass('pressed');
+    }).on('click', function() {
+        var input = $('#tickets');
+        var currentVal = parseInt(input.val());
+        if (currentVal > 1) {
+            input.val(currentVal - 1);
+        }
+    });
+
 
     var successModal = $('#successModal');
     var failedModal = $('#failedModal');
@@ -140,6 +163,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var mobile = $('#mobile').val();
+        var tickets = $('#tickets').val();
 
         var gpRegex = /^8801[37][0-9]{8}$/;
 
@@ -152,9 +176,16 @@ $(document).ready(function () {
         if (!gpRegex.test(mobile)) {
             $(".purchase-btn").prop('disabled', true);
             $('#error-msg').text('Invalid Number! Format must be 88017... or 88013...').show();
-            e.preventDefault(); // Stop form from submitting
+            e.preventDefault();
         } else {
-            window.location.href = 'https://gpglobal.b2mwap.com/api/subscription?keyword=TMT&msisdn=' + mobile;
+            var tickets = parseInt($('#tickets').val());
+            if (tickets <= 0) {
+                alert('Please select at least 1 ticket.');
+                e.preventDefault();
+                return;
+            }
+            console.log(mobile, tickets);
+            window.location.href = `https://gpglobal.b2mwap.com/api/subscription?keyword=TMT-TEST&msisdn=${mobile}&success_url=${window.location.origin}/api/callback/${mobile}/${tickets}&failed_url=${window.location.origin}/api/callback/${mobile}/${tickets}`;
         }
     });
 

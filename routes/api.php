@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Http;
 
 
 // Route::get('/get-ticket/{msisdn}', [TicketController::class, 'getTicket']);
-Route::get('/callback', [TicketController::class, 'callbackTicketTest']);
+Route::get('/callback/{msisdn}/{tickets}', [TicketController::class, 'callbackTicket']);
 Route::get('/delete-payment-record/{id}', [TicketController::class, 'deletePaymentRecord']);
-// Route::get('/callback-test', [TicketController::class, 'callbackTicketTest']);
 
 Route::get('/fetch-ticket/{msisdn}/{token}', [TicketController::class, 'fetchTicket']);
 

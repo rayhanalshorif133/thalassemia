@@ -27,7 +27,7 @@ class TicketController extends Controller
             $payment->msisdn = $msisdn;
             $payment->amount = 20;
             $payment->pay_status = 1;
-            $payment->date = $request->date_time ? $request->date_time : now();
+            $payment->date = now();
             $payment->response_data = $request->all() ? json_encode($request->all()) : null;
             $payment->save();
 
@@ -65,56 +65,29 @@ class TicketController extends Controller
     }
 
 
-    public function callbackTicket(Request $request)
-    {
-        if ($request->result == 'success') {
 
-            // GET Tricket Number
-
-
-            // Send SMS
-
-            return redirect()->route('purchase.success', ['msisdn' => $request->msisdn, 'type' => 'success']);
-        }
-
-        return redirect('https://thalassemia.b2mwap.com/?type=failure');
-    }
 
     // https://thalassemia.b2mwap.com/api/callback?result=success&msisdn=8801323174104
-    public function callbackTicketTest(Request $request)
+    public function callbackTicket(Request $request, $msisdn, $tickets)
     {
         if ($request->result == 'success') {
+            $ticketNos = [];
+            $tokens = [];
+            $payIds = [];
 
-            // GET Tricket Number
+            for ($i = 0; $i < $tickets; $i++) {
+                $ticketResponse = $this->getTicket($request, $msisdn);
+                if ($ticketResponse->original['status'] == 'success') {
+                    $ticketNos[] = $ticketResponse->original['ticket_no'];
+                    $tokens[] = $ticketResponse->original['token'];
+                    $payIds[] = $ticketResponse->original['pay_id'];
+                }
+            }
 
+            // Optionally send SMS for each ticket
+            // For now, just redirect to success
 
-            // $ticket = $this->getTicket($request, $request->msisdn);
-            // $ticket_no = $ticket->original['ticket_no'];
-            // $token = $ticket->original['token'];
-            // $pay_id = $ticket->original['pay_id'];
-            // $msisdn = $request->msisdn;
-            // $payment = Payment::find($pay_id);
-
-            // /send-sms
-            // $url = 'https://thalassemia.b2mwap.com/api/send-sms';
-
-            // // Making the GET request
-            // $response = Http::get($url, [
-            //     'user_id' => $token,
-            //     'ticket_no' => $ticket_no,
-            //     'msisdn' => $msisdn,
-            //     'acr' => $request->acr,
-            // ]);
-
-            // // Check if the request was successful
-            // if ($response->successful()) {
-            //     $payment->send_sms = 1;
-            //     $payment->save();
-            // } else {
-            //     Log::error('Failed to send SMS to ' . $msisdn . '. Response: ' . $response->body());
-            // }
-
-            return redirect()->route('purchase.success', ['msisdn' => $request->msisdn, 'type' => 'success']);
+            return redirect()->route('purchase.success', ['msisdn' => $msisdn, 'type' => 'success']);
         }
 
         return redirect('https://thalassemia.b2mwap.com/?type=failure');

@@ -9,15 +9,16 @@ use Carbon\Carbon;
 
 class WebController extends Controller
 {
-   
-    
+
+
     public function index()
     {
-       
-        return view('finished');
+
+        // return view('finished');
+        return view('landing-page');
     }
-    
-    
+
+
 
     public function purchaseSuccess(Request $request)
     {
@@ -37,12 +38,12 @@ class WebController extends Controller
 
     public function checkTicket($msisdn, $token)
     {
-        
+
         if($msisdn && $token){
-            return redirect()->route('ticket.download', ['msisdn' => $msisdn, 'user_id' => $token]); 
+            return redirect()->route('ticket.download', ['msisdn' => $msisdn, 'user_id' => $token]);
         }else{
             return redirect()->route('ticket.download');
         }
-       
+
     }
 }

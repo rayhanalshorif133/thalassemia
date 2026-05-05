@@ -31,6 +31,13 @@ $msisdn = substr($msisdn, 0, 13);
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <style>
+        .quantity-controls button.pressed {
+            transform: scale(0.9);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7296KN4JK7"></script>
     <script>
@@ -84,6 +91,15 @@ $msisdn = substr($msisdn, 0, 13);
                     <div id="error-msg" style="color: red; display: none; margin-top: 5px;"></div>
                 </div>
 
+                <div class="form-group">
+                    <label for="tickets">How many tickets to buy</label>
+                    <div class="quantity-controls" style="display: flex; align-items: center; justify-content: center;">
+                        <button type="button" id="minus-btn" style="width: 40px; height: 40px; border: none; background: linear-gradient(135deg, #f44336, #d32f2f); color: white; border-radius: 5px; cursor: pointer; font-size: 18px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.3s ease;"><i class="fas fa-minus"></i></button>
+                        <input type="number" id="tickets" name="tickets" value="1" min="1" readonly style="width: 60px; text-align: center; margin: 0 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 18px; padding: 8px; background: #f9f9f9;">
+                        <button type="button" id="plus-btn" style="width: 40px; height: 40px; border: none; background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border-radius: 5px; cursor: pointer; font-size: 18px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.3s ease;"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+
 
 
                 <div style="display: flex;justify-content: space-between;">
@@ -107,7 +123,7 @@ $msisdn = substr($msisdn, 0, 13);
                             <span style="color: #05009f;font-size: 14px;">
                                 <a href="tel:+8801701677479"
                                     style="color: inherit; text-decoration: none;">8801701677479 </a>
-                                    বা 
+                                    বা
                                     <a href="tel:+8801732701937"
                                     style="color: inherit; text-decoration: none;">8801732701937 </a>
                             </span>
@@ -126,7 +142,7 @@ $msisdn = substr($msisdn, 0, 13);
                                 </a>
                             </span>
                         </div>
-                       
+
                     </label>
                 </div>
 

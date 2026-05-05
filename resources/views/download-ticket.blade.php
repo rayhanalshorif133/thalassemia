@@ -285,11 +285,11 @@ $msisdn = substr($msisdn, 0, 13);
 
     <div id="ticket-visual"
         style="position: absolute; left: -9999px; top: 0; width: 600px; height: 270px; padding: 10px; border: 2px solid #11998e;
-           background-image: url('https://thalassemia.b2mwap.com/images/bg_ticket.jpeg');
-           background-color: #fff; 
+           background-image: url('http://127.0.0.1:8000/images/bg_ticket.jpeg');
+           background-color: #fff;
            background-repeat: no-repeat;
            background-position: center center;
-           background-size: 100% 100%; 
+           background-size: 100% 100%;
            -webkit-print-color-adjust: exact;">
         <div
             style="text-align: right; padding: 15px 40px; background: transparent;font-size: 18px; font-weight: 600;letter-spacing: 5px; color: #2f2f2f;">
