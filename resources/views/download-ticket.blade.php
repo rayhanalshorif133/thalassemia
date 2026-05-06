@@ -144,23 +144,25 @@ $msisdn = substr($msisdn, 0, 13);
                 <div class="form-group">
                     <a href="#" class="download-btn"
                         style="display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 92%;
-    margin: 0 auto;
-    padding: 14px 20px;
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    color: #ffffff;
-    font-family: 'Hind Siliguri', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 50px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    cursor: pointer;">Download
-                        Your Ticket</a>
+                            align-items: center;
+                            justify-content: center;
+                            width: 92%;
+                            margin: 0 auto;
+                            padding: 14px 20px;
+                            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                            color: #ffffff;
+                            font-family: 'Hind Siliguri', sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            text-decoration: none;
+                            border-radius: 50px;
+                            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+                            transition: all 0.3s ease;
+                            border: 2px solid transparent;
+                            cursor: pointer;"
+                    >
+                        Download Your Ticket
+                    </a>
                 </div>
 
 
